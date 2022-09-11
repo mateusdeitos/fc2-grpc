@@ -1,8 +1,28 @@
 syntax = "proto3";
 package pb;
+
+/**
+COMANDO para gerar os stubs em GO com o código necessário para fazer a conexão com gRPC:
+protoc 
+	--proto_path=proto/ proto/*.proto 
+	--plugin=$(go env GOPATH)/bin/protoc-gen-go-grpc 
+	--go-grpc_out=. 
+	--go_out=.
+*/
+
+// nome do pacote em GO que será gerado a partir do arquivo .proto
 option go_package = "./pb";
 
 message User {
+	
+	/**
+		O que são os números?
+		https://stackoverflow.com/questions/9018274/what-does-1-2-3-mean-in-protobuf
+		They're the field numbers - they're used in the wire representation to
+		identify which field is associated with a value. 
+		This means that renaming a field isn't a breaking change (in terms of wire format)
+		and the names themselves don't have to be serialized.
+	*/
     string id = 1;
     string name = 2;
     string email = 3;
