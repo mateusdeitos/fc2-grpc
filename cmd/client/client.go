@@ -16,6 +16,8 @@ func main() {
 	if err != nil {
 		log.Fatalf("Could not connect to gRPC Server: %v", err)
 	}
+
+	// defer irá encerrar a conexão ao terminar de usar
 	defer connection.Close()
 
 	client := pb.NewUserServiceClient(connection)
@@ -64,6 +66,8 @@ func AddUserVerbose(client pb.UserServiceClient) {
 	}
 }
 
+// Faz streaming unidirecional, apenas o server fazer o streaming
+// O Client recebe o resultado somente quando o streaming termina
 func AddUsers(client pb.UserServiceClient) {
 	reqs := []*pb.User{
 		&pb.User{
@@ -111,6 +115,8 @@ func AddUsers(client pb.UserServiceClient) {
 	fmt.Println(res)
 }
 
+// Stream bidirecional, o client recebe os resultados
+// assim que eles começarem a ser enviados pelo server
 func AddUserStreamBoth(client pb.UserServiceClient) {
 
 	stream, err := client.AddUserStreamBoth(context.Background())
